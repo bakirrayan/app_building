@@ -1,5 +1,6 @@
+import { Image } from "expo-image";
 import { useRouter } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 type Props = {
   name: string;
