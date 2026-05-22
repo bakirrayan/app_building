@@ -2,11 +2,12 @@ import { useLocalSearchParams } from 'expo-router';
 import ContactDetail from '../components/ContactDetail';
 
 export default function ContactDetailScreen() {
-  const { name, phone, avatar } = useLocalSearchParams<{
+  const { id, name, phone, avatar } = useLocalSearchParams<{
+    id: string;
     name: string;
     phone: string;
     avatar: string;
   }>();
 
-  return <ContactDetail name={name} phone={phone} avatar={avatar} />;
+  return <ContactDetail id={id} name={name} phone={phone} avatar={avatar} />;
 }

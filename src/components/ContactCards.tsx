@@ -3,18 +3,19 @@ import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 type Props = {
+  id: string;
   name: string;
   phone: string;
   avatar: string;
 };
 
-export default function ContactCard({ name, phone, avatar }: Props) {
+export default function ContactCard({ id, name, phone, avatar }: Props) {
   const router = useRouter();
 
   const handlePress = () => {
     router.push({
       pathname: '/contact',
-      params: {name, phone, avatar}
+      params: {id, name, phone, avatar}
     })
   }
 

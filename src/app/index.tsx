@@ -1,40 +1,13 @@
 import ContactCards from "@/components/ContactCards";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
+import { useContacts } from "@/context/ContactsContext";
+import { CircularWavyProgressIndicator, Host } from '@expo/ui/jetpack-compose';
+import { useEffect } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
-type Contact = {
-  id: string,
-  name: string,
-  phone: string,
-  avatar: string
-}
+
 
 export default function Index() {
-
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errors, setError]= useState('');
-
-  const fetchContacts = async () => {
-    try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/users');
-      const json = await response.json();
-      setContacts(json.map((item: any) => ({
-        id: item.id.toString(),
-        name: item.name,
-        phone: item.phone,
-        avatar: `https://i.pravatar.cc/150?img=${item.id}`
-      })));
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("An unexpected error occurred");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const { contacts, isLoading, errors, fetchContacts } = useContacts();
 
   useEffect(() => {
     fetchContacts();
@@ -48,7 +21,9 @@ export default function Index() {
       }
       {isLoading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator size="large" color="#1D9E75" />
+          <Host matchContents>
+            <CircularWavyProgressIndicator color="#1eff00"/>
+          </Host>
         </View>
       ) : contacts.length > 0 && (
         <FlatList
@@ -56,10 +31,11 @@ export default function Index() {
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <ContactCards
-            name={item.name}
-            phone={item.phone}
-            avatar={item.avatar}
-          />
+              id={item.id}
+              name={item.name}
+              phone={item.phone}
+              avatar={item.avatar}
+            />
         )}
         style={styles.list}
         contentContainerStyle={styles.listContent}

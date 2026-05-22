@@ -1,19 +1,31 @@
+import { useContacts } from "@/context/ContactsContext";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type Props = {
+  id: string;
   name: string;
   phone: string;
   avatar: string;
 };
 
-export default function ContactDetail({name, phone, avatar}: Props) {
+export default function ContactDetail({id, name, phone, avatar}: Props) {
   const router = useRouter();
+  const { deleteContact } = useContacts();
+
+  const handleDelete = () => {
+    deleteContact(id);
+    router.back();
+  }
+
   return (
     <View style={styles.container}>
       <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backText}>← Back</Text>
+      </Pressable>
+      <Pressable style={styles.deleteButton} onPress={handleDelete}>
+        <Text style={styles.deleteText}>Delete</Text>
       </Pressable>
       <Image source={{ uri: avatar }} style={styles.avatar}/>
       <Text style={styles.name} numberOfLines={1}>{name}</Text>
@@ -38,6 +50,16 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 16,
     color: '#1D9E75',
+    fontWeight: '500',
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+  },
+  deleteText: {
+    fontSize: 16,
+    color: '#ff4d4d',
     fontWeight: '500',
   },
   avatar: {
