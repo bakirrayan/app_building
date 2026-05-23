@@ -11,7 +11,7 @@ export default function Index() {
 
   useEffect(() => {
     fetchContacts();
-  }, [])
+  }, [fetchContacts])
 
   return (
     <View style={styles.container}>
